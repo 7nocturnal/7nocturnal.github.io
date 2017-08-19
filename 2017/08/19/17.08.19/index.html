@@ -93,16 +93,16 @@
 
 
 
-<meta name="description" content="大小端序大端序：字数据的高字节存储在低地址中。  小端序：字数据的低字节存储在低地址中。   大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。 大端序：   地址 0x001 0x002 0x003     内容 0x12 0x34 0x56    小端序   地址 0x001 0x002 0x003     内容 0x56 0x34 0x12">
+<meta name="description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大小端序">
-<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/18/17.08.18/index.html">
+<meta property="og:title" content="GOT覆盖和Linux地址随机化">
+<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="大小端序大端序：字数据的高字节存储在低地址中。  小端序：字数据的低字节存储在低地址中。   大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。 大端序：   地址 0x001 0x002 0x003     内容 0x12 0x34 0x56    小端序   地址 0x001 0x002 0x003     内容 0x56 0x34 0x12">
-<meta property="og:updated_time" content="2017-08-18T13:30:47.000Z">
+<meta property="og:description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
+<meta property="og:updated_time" content="2017-08-19T01:49:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大小端序">
-<meta name="twitter:description" content="大小端序大端序：字数据的高字节存储在低地址中。  小端序：字数据的低字节存储在低地址中。   大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。 大端序：   地址 0x001 0x002 0x003     内容 0x12 0x34 0x56    小端序   地址 0x001 0x002 0x003     内容 0x56 0x34 0x12">
+<meta name="twitter:title" content="GOT覆盖和Linux地址随机化">
+<meta name="twitter:description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
 
 
 
@@ -130,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/18/17.08.18/"/>
+  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/"/>
 
 
 
 
 
-  <title>大小端序 | </title>
+  <title>GOT覆盖和Linux地址随机化 | </title>
   
 
 
@@ -275,7 +275,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/18/17.08.18/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="7nocturnal">
@@ -292,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">大小端序</h1>
+          <h1 class="post-title" itemprop="name headline">GOT覆盖和Linux地址随机化</h1>
         
 
         <div class="post-meta">
@@ -304,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T21:29:31+08:00">
-                2017-08-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T09:48:03+08:00">
+                2017-08-19
               </time>
             
 
@@ -339,48 +339,20 @@
       
 
       
-        <h1 id="大小端序"><a href="#大小端序" class="headerlink" title="大小端序"></a>大小端序</h1><p>大端序：字数据的高字节存储在低地址中。 </p>
-<p>小端序：字数据的低字节存储在低地址中。  </p>
-<p>大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。</p>
-<h4 id="大端序："><a href="#大端序：" class="headerlink" title="大端序："></a>大端序：</h4><table>
-<thead>
-<tr>
-<th>地址</th>
-<th>0x001</th>
-<th>0x002</th>
-<th>0x003</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>内容</td>
-<td>0x12</td>
-<td>0x34</td>
-<td>0x56</td>
-</tr>
-</tbody>
-</table>
-<h4 id="小端序"><a href="#小端序" class="headerlink" title="小端序"></a>小端序</h4><table>
-<thead>
-<tr>
-<th>地址</th>
-<th>0x001</th>
-<th>0x002</th>
-<th>0x003</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>内容</td>
-<td>0x56</td>
-<td>0x34</td>
-<td>0x12</td>
-</tr>
-</tbody>
-</table>
+        <h1 id="GOT覆盖"><a href="#GOT覆盖" class="headerlink" title="GOT覆盖"></a>GOT覆盖</h1><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h6 id="由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"><a href="#由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。" class="headerlink" title="由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"></a>由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。</h6><h3 id="GOT表："><a href="#GOT表：" class="headerlink" title="GOT表："></a>GOT表：</h3><h5 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h5><p>每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。</p>
+<h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应的符号，并将它重定位到GOT之后每次调用这个函数都会将控制权直接转向那个位置，而不再调用rtld。</p>
+<h5 id="查看："><a href="#查看：" class="headerlink" title="查看："></a>查看：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ readelf -r target_elf</div><div class="line">或者</div><div class="line">$ objdump -R target_elf</div></pre></td></tr></table></figure>
 <hr>
+<h1 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR:"></a>ASLR:</h1><p>Address space layout  randomization:地址空间布局随机化，是参与保护缓冲区溢出问题的一个计算机安全技术。是为了防止攻击者在内存中能够可靠地对跳转到特定利用函数。ASLR包括随机排列程序的关键数据区域的位置，包括可执行的部分、堆、栈及共享库的位置。</p>
+<h3 id="作用：-1"><a href="#作用：-1" class="headerlink" title="作用："></a>作用：</h3><p>ASLR通过制造更多让攻击者预测目标地址的困难以阻碍一些类型的安装攻击。例如：攻击者试图执行返回到libc的攻击必须要找到要执行的代码，而其他攻击者试图执行shellcode注入栈上则必须首先到栈。在这两种情况下，系统将模糊攻击者相关的存储器地址。这些值被猜中，并且错误的猜测由于应用程序崩溃通常是不可恢复的。</p>
+<h3 id="有效性："><a href="#有效性：" class="headerlink" title="有效性："></a>有效性：</h3><p>地址空间布局随机化是基于攻击者猜测随机化空间位置的可能性降低。安全是通过增加搜索空间的方式来实现的。因此，ASLR提供更多的熵存在于随机偏移中时是更有效的。熵增加或许提高了其随机出现虚拟内存区域的空间量或减少了其随机发生的时期。该期间通常被实现尽可能小，因此，大多数系统必须增加VMA空间随机化。</p>
+<h3 id="绕过："><a href="#绕过：" class="headerlink" title="绕过："></a>绕过：</h3><p>要打败随机化，攻击者必须成功猜出所有他们想要攻击的区域的位置。为数据区，如堆和栈，定制代码或者有用的数据可以被加载，一个以上的状态可以通过使用NOP滑动代码或数据的重复拷贝被攻击。如果一个区域被分配到少数值中的一个将被允许攻击成功。与此相反，代码区域例如：基础库，主要的可执行的需要准确地发现。通常这些区域被混合，例如堆栈桢被注入到栈和动态库中。苹果越狱就用到了绕过ASLR的技术，只要覆盖所有大量区域 那么最后的地址只能在有限的地方而非随机。</p>
+<h3 id="GNU-Linux中关闭ASLR的方法："><a href="#GNU-Linux中关闭ASLR的方法：" class="headerlink" title="GNU Linux中关闭ASLR的方法："></a>GNU Linux中关闭ASLR的方法：</h3><h5 id="disable-ASLR"><a href="#disable-ASLR" class="headerlink" title="disable ASLR:"></a>disable ASLR:</h5><p>echo 0 &gt;/proc/sys/kernel/randomize_va_space </p>
+<p>cat /proc/sys/kernel/randomize_va_space </p>
+<p>0 - 表示关闭进程地址空间随机化。<br>1 - 表示将mmap的基址，stack和vdso页面随机化。<br>2 - 表示在1的基础上增加栈（heap）的随机化。</p>
 <hr>
-<p>用代码测试你是大端序小端序，输出1为小端序，有的gcc不支持bool类型变量，可讲bool改为int<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">bool checkCPU()</div><div class="line">&#123;</div><div class="line">union</div><div class="line">&#123;</div><div class="line">int a ;</div><div class="line">char b ;</div><div class="line">&#125; c;</div><div class="line"></div><div class="line">c.a = 1 ;</div><div class="line">return(c.b == 1);</div><div class="line">&#125;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">int a=0;</div><div class="line">a = checkCPU();</div><div class="line">printf(&quot;%d&quot;,a);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>相关题目：<a href="http://pwnable.kr/" target="_blank" rel="external">pwnable.kr <passcode></passcode></a>  </p>
+<p>PS：scanf()如果忘记加取地址符号&amp;，程序就会从栈中选取一个4字节数据充当这个地址</p>
 
       
     </div>
@@ -417,15 +389,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/08/18/17.08.18/" rel="next" title="大小端序">
+                <i class="fa fa-chevron-left"></i> 大小端序
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/19/17.08.19/" rel="prev" title="GOT覆盖和Linux地址随机化">
-                GOT覆盖和Linux地址随机化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -559,7 +531,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#大小端序"><span class="nav-number">1.</span> <span class="nav-text">大小端序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大端序："><span class="nav-number">1.0.0.1.</span> <span class="nav-text">大端序：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小端序"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">小端序</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GOT覆盖"><span class="nav-number">1.</span> <span class="nav-text">GOT覆盖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.0.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"><span class="nav-number">1.0.1.0.0.1.</span> <span class="nav-text">由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GOT表："><span class="nav-number">1.0.2.</span> <span class="nav-text">GOT表：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#概念："><span class="nav-number">1.0.2.0.1.</span> <span class="nav-text">概念：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用："><span class="nav-number">1.0.2.0.2.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看："><span class="nav-number">1.0.2.0.3.</span> <span class="nav-text">查看：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASLR"><span class="nav-number">2.</span> <span class="nav-text">ASLR:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#作用：-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有效性："><span class="nav-number">2.0.2.</span> <span class="nav-text">有效性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过："><span class="nav-number">2.0.3.</span> <span class="nav-text">绕过：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GNU-Linux中关闭ASLR的方法："><span class="nav-number">2.0.4.</span> <span class="nav-text">GNU Linux中关闭ASLR的方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#disable-ASLR"><span class="nav-number">2.0.4.0.1.</span> <span class="nav-text">disable ASLR:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
