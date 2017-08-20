@@ -93,16 +93,18 @@
 
 
 
-<meta name="description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
+<meta name="description" content="简介什么是破壳漏洞：“破壳”是Bash(GNU Bourne Again Shell)中出现的允许攻击者通过环境变量执行任意命令的漏洞。  影响范围：目前已验证Red Hat、 CentOS 、Ubuntu 、Fedora 、Amazon Linux 、OSX10.10均拥有存在CVE-2014-6271漏洞的bash版本，以bash在各主流操作系统的广泛应用，此漏洞的影响范围包括但不限于大多数应">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GOT覆盖和Linux地址随机化">
-<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/index.html">
+<meta property="og:title" content="Bash破壳漏洞">
+<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/20/17.08.20/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
-<meta property="og:updated_time" content="2017-08-19T01:49:28.000Z">
+<meta property="og:description" content="简介什么是破壳漏洞：“破壳”是Bash(GNU Bourne Again Shell)中出现的允许攻击者通过环境变量执行任意命令的漏洞。  影响范围：目前已验证Red Hat、 CentOS 、Ubuntu 、Fedora 、Amazon Linux 、OSX10.10均拥有存在CVE-2014-6271漏洞的bash版本，以bash在各主流操作系统的广泛应用，此漏洞的影响范围包括但不限于大多数应">
+<meta property="og:image" content="http://image.3001.net/images/20141105/14151202337699.png">
+<meta property="og:updated_time" content="2017-08-20T11:33:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GOT覆盖和Linux地址随机化">
-<meta name="twitter:description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
+<meta name="twitter:title" content="Bash破壳漏洞">
+<meta name="twitter:description" content="简介什么是破壳漏洞：“破壳”是Bash(GNU Bourne Again Shell)中出现的允许攻击者通过环境变量执行任意命令的漏洞。  影响范围：目前已验证Red Hat、 CentOS 、Ubuntu 、Fedora 、Amazon Linux 、OSX10.10均拥有存在CVE-2014-6271漏洞的bash版本，以bash在各主流操作系统的广泛应用，此漏洞的影响范围包括但不限于大多数应">
+<meta name="twitter:image" content="http://image.3001.net/images/20141105/14151202337699.png">
 
 
 
@@ -130,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/"/>
+  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/20/17.08.20/"/>
 
 
 
 
 
-  <title>GOT覆盖和Linux地址随机化 | </title>
+  <title>Bash破壳漏洞 | </title>
   
 
 
@@ -275,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/20/17.08.20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="七夜">
@@ -292,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">GOT覆盖和Linux地址随机化</h1>
+          <h1 class="post-title" itemprop="name headline">Bash破壳漏洞</h1>
         
 
         <div class="post-meta">
@@ -304,8 +306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T09:48:03+08:00">
-                2017-08-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-20T19:31:58+08:00">
+                2017-08-20
               </time>
             
 
@@ -339,20 +341,25 @@
       
 
       
-        <h1 id="GOT覆盖"><a href="#GOT覆盖" class="headerlink" title="GOT覆盖"></a>GOT覆盖</h1><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h6 id="由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"><a href="#由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。" class="headerlink" title="由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"></a>由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。</h6><h3 id="GOT表："><a href="#GOT表：" class="headerlink" title="GOT表："></a>GOT表：</h3><h5 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h5><p>每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。</p>
-<h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应的符号，并将它重定位到GOT之后每次调用这个函数都会将控制权直接转向那个位置，而不再调用rtld。</p>
-<h5 id="查看："><a href="#查看：" class="headerlink" title="查看："></a>查看：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ readelf -r target_elf</div><div class="line">或者</div><div class="line">$ objdump -R target_elf</div></pre></td></tr></table></figure>
-<hr>
-<h1 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR:"></a>ASLR:</h1><p>Address space layout  randomization:地址空间布局随机化，是参与保护缓冲区溢出问题的一个计算机安全技术。是为了防止攻击者在内存中能够可靠地对跳转到特定利用函数。ASLR包括随机排列程序的关键数据区域的位置，包括可执行的部分、堆、栈及共享库的位置。</p>
-<h3 id="作用：-1"><a href="#作用：-1" class="headerlink" title="作用："></a>作用：</h3><p>ASLR通过制造更多让攻击者预测目标地址的困难以阻碍一些类型的安装攻击。例如：攻击者试图执行返回到libc的攻击必须要找到要执行的代码，而其他攻击者试图执行shellcode注入栈上则必须首先到栈。在这两种情况下，系统将模糊攻击者相关的存储器地址。这些值被猜中，并且错误的猜测由于应用程序崩溃通常是不可恢复的。</p>
-<h3 id="有效性："><a href="#有效性：" class="headerlink" title="有效性："></a>有效性：</h3><p>地址空间布局随机化是基于攻击者猜测随机化空间位置的可能性降低。安全是通过增加搜索空间的方式来实现的。因此，ASLR提供更多的熵存在于随机偏移中时是更有效的。熵增加或许提高了其随机出现虚拟内存区域的空间量或减少了其随机发生的时期。该期间通常被实现尽可能小，因此，大多数系统必须增加VMA空间随机化。</p>
-<h3 id="绕过："><a href="#绕过：" class="headerlink" title="绕过："></a>绕过：</h3><p>要打败随机化，攻击者必须成功猜出所有他们想要攻击的区域的位置。为数据区，如堆和栈，定制代码或者有用的数据可以被加载，一个以上的状态可以通过使用NOP滑动代码或数据的重复拷贝被攻击。如果一个区域被分配到少数值中的一个将被允许攻击成功。与此相反，代码区域例如：基础库，主要的可执行的需要准确地发现。通常这些区域被混合，例如堆栈桢被注入到栈和动态库中。苹果越狱就用到了绕过ASLR的技术，只要覆盖所有大量区域 那么最后的地址只能在有限的地方而非随机。</p>
-<h3 id="GNU-Linux中关闭ASLR的方法："><a href="#GNU-Linux中关闭ASLR的方法：" class="headerlink" title="GNU Linux中关闭ASLR的方法："></a>GNU Linux中关闭ASLR的方法：</h3><h5 id="disable-ASLR"><a href="#disable-ASLR" class="headerlink" title="disable ASLR:"></a>disable ASLR:</h5><p>echo 0 &gt;/proc/sys/kernel/randomize_va_space </p>
-<p>cat /proc/sys/kernel/randomize_va_space </p>
-<p>0 - 表示关闭进程地址空间随机化。<br>1 - 表示将mmap的基址，stack和vdso页面随机化。<br>2 - 表示在1的基础上增加栈（heap）的随机化。</p>
-<hr>
-<p>相关题目：<a href="http://pwnable.kr/" target="_blank" rel="external">pwnable.kr <passcode></passcode></a>  </p>
-<p>PS：scanf()如果忘记加取地址符号&amp;，程序就会从栈中选取一个4字节数据充当这个地址</p>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="什么是破壳漏洞："><a href="#什么是破壳漏洞：" class="headerlink" title="什么是破壳漏洞："></a>什么是破壳漏洞：</h2><p><strong>“破壳”是Bash(GNU Bourne Again Shell)中出现的允许攻击者通过环境变量执行任意命令的漏洞。</strong></p>
+<p><img src="http://image.3001.net/images/20141105/14151202337699.png" alt="image"></p>
+<h2 id="影响范围："><a href="#影响范围：" class="headerlink" title="影响范围："></a>影响范围：</h2><p>目前已验证Red Hat、 CentOS 、Ubuntu 、Fedora 、Amazon Linux 、OSX10.10均拥有存在CVE-2014-6271漏洞的bash版本，以bash在各主流操作系统的广泛应用，此漏洞的影响范围包括但不限于大多数应用bash的Unix、Linux、MacOSX，针对这些操作系统管理下的数据存在高危威胁。<br>目前抽样验证当前出厂预装的Andriod操作系统暂不支持ENV命令，可推测针对Andriod操作系统受到此漏洞影响的可能性较小。</p>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><h2 id="漏洞验证"><a href="#漏洞验证" class="headerlink" title="漏洞验证"></a>漏洞验证</h2><p><strong>目前的bash脚本是以通过导出环境变量的方式支持自定义函数，也可将自定义的bash函数传递给子相关进程。一般函数体内的代码是不会被执行，但此漏洞会错误的将“{}”花括号外的命令进行执行。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">env x=&apos;() &#123; :;&#125;; echo Vulnerable CVE-2014-6271 &apos; bash -c &quot;echo test&quot;</div></pre></td></tr></table></figure></p>
+<h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p><strong>目前的bash使用的环境变量是通过函数名称来调用的，导致漏洞出问题是以“(){”开头定义的环境变量在命令ENV中解析成函数后，Bash执行并未退出，而是继续解析并执行shell命令。核心的原因在于在输入的过滤中没有严格限制边界，没有做合法化的参数判断。</strong> </p>
+<h2 id="ENV指令："><a href="#ENV指令：" class="headerlink" title="ENV指令："></a>ENV指令：</h2><p>ENV指令允许临时改变环境变量，即指定本次指令执行的环境变量，这从一定程度上给了黑客进行PATH Hajaking的可能性   </p>
+<p>ENV指令还允许在设置环境变量后进行指令执行，从某种程度上来说，ENV相当于一个指令执行的指令，同时还附带有临时设置环境变量的功能  </p>
+<p>ENV的指令执行走的是正常的BASH指令解析、执行流程，而在一个采取了安全配置的服务器上，对敏感指令的执行都是进行用户级别的权限限制的，所以，ENV本身并不是任意指令执行。真正导致命令任意执行的原因是代码注入</p>
+<p><strong>具体的env命令，可查看env的man手册和帮助</strong></p>
+<h1 id="漏洞可能带来的影响"><a href="#漏洞可能带来的影响" class="headerlink" title="漏洞可能带来的影响"></a>漏洞可能带来的影响</h1><ol>
+<li>此漏洞可以绕过ForceCommand在sshd中的配置，从而执行任意命令。</li>
+<li>如果CGI脚本用bash编写，则使用mod_cgi或mod_cgid的Apache服务器会受到影响。</li>
+<li>DHCP客户端调用shell脚本来配置系统，可能存在允许任意命令执行。</li>
+<li>各种daemon和SUID/privileged的程序都可能执行shell脚本，通过用户设置或影响环境变量值，允许任意命令运行。</li>
+</ol>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
+<li><a href="http://www.antiy.com/response/CVE-2014-6271.html#" target="_blank" rel="external">http://www.antiy.com/response/CVE-2014-6271.html#</a></li>
+<li><a href="http://www.freebuf.com/articles/system/50065.html" target="_blank" rel="external">http://www.freebuf.com/articles/system/50065.html</a></li>
+</ol>
 
       
     </div>
@@ -389,8 +396,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/18/17.08.18/" rel="next" title="大小端序">
-                <i class="fa fa-chevron-left"></i> 大小端序
+              <a href="/2017/08/19/17.08.19/" rel="next" title="GOT覆盖和Linux地址随机化">
+                <i class="fa fa-chevron-left"></i> GOT覆盖和Linux地址随机化
               </a>
             
           </div>
@@ -398,10 +405,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/20/17.08.20/" rel="prev" title="Bash破壳漏洞">
-                Bash破壳漏洞 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -555,7 +558,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GOT覆盖"><span class="nav-number">1.</span> <span class="nav-text">GOT覆盖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.0.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"><span class="nav-number">1.0.1.0.0.1.</span> <span class="nav-text">由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GOT表："><span class="nav-number">1.0.2.</span> <span class="nav-text">GOT表：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#概念："><span class="nav-number">1.0.2.0.1.</span> <span class="nav-text">概念：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用："><span class="nav-number">1.0.2.0.2.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看："><span class="nav-number">1.0.2.0.3.</span> <span class="nav-text">查看：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ASLR"><span class="nav-number">2.</span> <span class="nav-text">ASLR:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#作用：-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有效性："><span class="nav-number">2.0.2.</span> <span class="nav-text">有效性：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过："><span class="nav-number">2.0.3.</span> <span class="nav-text">绕过：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GNU-Linux中关闭ASLR的方法："><span class="nav-number">2.0.4.</span> <span class="nav-text">GNU Linux中关闭ASLR的方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#disable-ASLR"><span class="nav-number">2.0.4.0.1.</span> <span class="nav-text">disable ASLR:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是破壳漏洞："><span class="nav-number">1.1.</span> <span class="nav-text">什么是破壳漏洞：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#影响范围："><span class="nav-number">1.2.</span> <span class="nav-text">影响范围：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解析"><span class="nav-number">2.</span> <span class="nav-text">解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#漏洞验证"><span class="nav-number">2.1.</span> <span class="nav-text">漏洞验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漏洞原理"><span class="nav-number">2.2.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENV指令："><span class="nav-number">2.3.</span> <span class="nav-text">ENV指令：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#漏洞可能带来的影响"><span class="nav-number">3.</span> <span class="nav-text">漏洞可能带来的影响</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考链接"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
             
 
           </div>
