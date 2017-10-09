@@ -276,6 +276,164 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/10/09/od的简单使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="七夜">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ouka4zyv7.bkt.clouddn.com/%E5%9B%BE%E7%89%87.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/09/od的简单使用/" itemprop="url">od的简单使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T22:57:44+08:00">
+                2017-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工具/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>&emsp; 我在网上看了一下od的教程很全很好，不过为了方面学弟学妹们以及和大家交流，我决定写一下关于od的简单使用(大牛请无视)。<br>&emsp; 首先把软件挂一下，od很多版本，52pojie的od还是挺好用的](<a href="https://down.52pojie.cn/Tools/Debuggers/" target="_blank" rel="external">https://down.52pojie.cn/Tools/Debuggers/</a>)  </p>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>&emsp; 在软件开发的过程中，程序员会使用一些调试工具，以便高效地找出软件中存在的错误。<br>&emsp; 而在逆向分析领域，分析者也会利用相关的调试工具来分析软件的行为并验证分析结果。<br>&emsp; 软件调试技术分为静态调试技术和动态调试技术，而od具有强大的动态调试功能。<br>&emsp; OllyDbg 是一种具有可视化界面的 32 位汇编-分析调试器。它的特别之处在于可以在没有源代码时解决问题，并且可以处理其它编译器无法解决的难题。</p>
+<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><p><img src="http://blog.fishc.com/wp-content/uploads/2012/08/od_window21.gif_95021.gif" alt="image"></p>
+<ol>
+<li>汇编代码对应的地址窗口</li>
+<li>汇编代码对应的十六进制机器码窗口</li>
+<li>反汇编窗口</li>
+<li>反汇编代码对应的注释信息窗口</li>
+<li>寄存器信息窗口</li>
+<li>当前执行到的反汇编代码的信息窗口<br>7~9. 数据所在的内存地址，十六进制，ASCII码<br>10~12.栈地址，存放的数据，对应说明信息</li>
+</ol>
+<h4 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h4><p>F2 &emsp; //下断点<br>F3 &emsp; //加载一个可执行程序<br>F4 &emsp; //程序执行到光标处<br>F5 &emsp; //缩小，还原当前窗口<br>F7 &emsp;  //单步步入<br>F8 &emsp;  //单步步过<br>F9  &emsp; //直接运行程序，遇到断点处，程序会暂停<br>Ctrl+F2 &emsp;  //重新运行程序到起始处，用于重新调试程序<br>Ctrl+F9 &emsp;  //执行到函数的返回处，用于跳出函数<br>Alt+F9 &emsp;  //执行到用户代码处，用于快速跳出系统函数<br>Ctrl+G &emsp;  //输入十六进制地址，快速定位到该地址处  </p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>&emsp; 使用不必多说，网上好多大牛总结的非常经典，下面我就给大家演示一下破解一个简单的小程序。  </p>
+<p>程序链接:<a href="http://pan.baidu.com/s/1hsOof0C" target="_blank" rel="external">http://pan.baidu.com/s/1hsOof0C</a>  密码:ec5n</p>
+<hr>
+<p>大牛略过，过程面对萌新，较为详细</p>
+<hr>
+<p>首先用od打开程序<br><img src="http://ouka4zyv7.bkt.clouddn.com/11.png" alt="image"></p>
+<p>然后鼠标右键查找字符串<br><img src="http://ouka4zyv7.bkt.clouddn.com/12.png" alt="image"></p>
+<p>&emsp; 找到关键字符，从而找到程序入口点，比如程序运行过程中显示的字符都可能成为关键字符，在关键字符周围下断点，先找到程序入口点(多下断点，多下断点，多下断点)，往上找一找有一片NOP，就表示找到了这段函数的入口了，直接在入口点按F2下断点。<br><img src="http://ouka4zyv7.bkt.clouddn.com/13.png" alt="image"><br><img src="http://ouka4zyv7.bkt.clouddn.com/14.png" alt="image"></p>
+<p>&emsp; F9运行程序，我们输入123456789只有，在call函数成功断下，004010AA这个函数应该是接收输入的值，004010B0是0x61也就是字符’a’和2比较，那么这个字符串的第二个字符应该是’a’<br><img src="http://ouka4zyv7.bkt.clouddn.com/16.png" alt="image"></p>
+<p>&emsp; cmp之后jnz，判断是否相等，不相等就跳转，改一下不让它跳转，双击红圈内字符，把z标志位改成1<br><img src="http://ouka4zyv7.bkt.clouddn.com/17.png" alt="image"></p>
+<p>&emsp; 在004010C3有个call函数进去看一下，然后会发现’3’和’5’比较，根据分析3是我们输入的，所以第三个字符应该是5<br><img src="http://ouka4zyv7.bkt.clouddn.com/18.png" alt="image"></p>
+<p>然后依次分析得出最终答案</p>
+<p><img src="http://ouka4zyv7.bkt.clouddn.com/111.png" alt="image"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/20/17.08.20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -787,7 +945,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -798,7 +956,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
