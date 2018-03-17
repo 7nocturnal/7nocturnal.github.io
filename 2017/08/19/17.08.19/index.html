@@ -100,7 +100,7 @@
 <meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/19/17.08.19/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
-<meta property="og:updated_time" content="2017-09-29T08:42:24.000Z">
+<meta property="og:updated_time" content="2018-03-17T12:38:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GOT覆盖和Linux地址随机化">
 <meta name="twitter:description" content="GOT覆盖原理由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。GOT表：概念：每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。 作用：把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应">
@@ -364,7 +364,7 @@
       
         <h1 id="GOT覆盖"><a href="#GOT覆盖" class="headerlink" title="GOT覆盖"></a>GOT覆盖</h1><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><h6 id="由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"><a href="#由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。" class="headerlink" title="由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。"></a>由于GOT表是可写的，把其中的函数地址覆盖为我们shellcode地址，在程序进行调用这个函数时就会执行shellcode。</h6><h3 id="GOT表："><a href="#GOT表：" class="headerlink" title="GOT表："></a>GOT表：</h3><h5 id="概念："><a href="#概念：" class="headerlink" title="概念："></a>概念：</h5><p>每一个外部定义的符号在全局偏移表（Global offset Table ）中有相应的条目，GOT位于ELF的数据段中，叫做GOT段。</p>
 <h5 id="作用："><a href="#作用：" class="headerlink" title="作用："></a>作用：</h5><p>把位置无关的地址计算重定位到一个绝对地址。程序首次调用某个库函数时，运行时连接编辑器（rtld）找到相应的符号，并将它重定位到GOT之后每次调用这个函数都会将控制权直接转向那个位置，而不再调用rtld。</p>
-<h5 id="查看："><a href="#查看：" class="headerlink" title="查看："></a>查看：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ readelf -r target_elf</div><div class="line">或者</div><div class="line">$ objdump -R target_elf</div></pre></td></tr></table></figure>
+<h5 id="查看："><a href="#查看：" class="headerlink" title="查看："></a>查看：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ readelf -r target_elf</div><div class="line">或者</div><div class="line">$ objdump -R target_elf</div></pre></td></tr></table></figure>
 <hr>
 <h1 id="ASLR"><a href="#ASLR" class="headerlink" title="ASLR:"></a>ASLR:</h1><p>Address space layout  randomization:地址空间布局随机化，是参与保护缓冲区溢出问题的一个计算机安全技术。是为了防止攻击者在内存中能够可靠地对跳转到特定利用函数。ASLR包括随机排列程序的关键数据区域的位置，包括可执行的部分、堆、栈及共享库的位置。</p>
 <h3 id="作用：-1"><a href="#作用：-1" class="headerlink" title="作用："></a>作用：</h3><p>ASLR通过制造更多让攻击者预测目标地址的困难以阻碍一些类型的安装攻击。例如：攻击者试图执行返回到libc的攻击必须要找到要执行的代码，而其他攻击者试图执行shellcode注入栈上则必须首先到栈。在这两种情况下，系统将模糊攻击者相关的存储器地址。这些值被猜中，并且错误的猜测由于应用程序崩溃通常是不可恢复的。</p>
