@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="知识点总结," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -93,17 +93,16 @@
 
 
 
-<meta name="description" content="大小端序大端序：字数据的高字节存储在低地址中。  小端序：字数据的低字节存储在低地址中。   大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。 大端序：   地址 0x001 0x002 0x003     内容 0x12 0x34 0x56    小端序   地址 0x001 0x002 0x003     内容 0x56 0x34 0x12">
-<meta name="keywords" content="知识点总结">
+<meta name="description" content="&amp;emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。 安装请点这里 常用模块tubes : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPEelf : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息dynelf">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大小端序">
-<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/18/17.08.18/index.html">
+<meta property="og:title" content="pwntools的使用学习">
+<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2018/03/17/pwntools的使用学习/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="大小端序大端序：字数据的高字节存储在低地址中。  小端序：字数据的低字节存储在低地址中。   大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。 大端序：   地址 0x001 0x002 0x003     内容 0x12 0x34 0x56    小端序   地址 0x001 0x002 0x003     内容 0x56 0x34 0x12">
-<meta property="og:updated_time" content="2017-09-29T08:42:35.000Z">
+<meta property="og:description" content="&amp;emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。 安装请点这里 常用模块tubes : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPEelf : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息dynelf">
+<meta property="og:updated_time" content="2018-03-17T12:28:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大小端序">
-<meta name="twitter:description" content="大小端序大端序：字数据的高字节存储在低地址中。  小端序：字数据的低字节存储在低地址中。   大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。 大端序：   地址 0x001 0x002 0x003     内容 0x12 0x34 0x56    小端序   地址 0x001 0x002 0x003     内容 0x56 0x34 0x12">
+<meta name="twitter:title" content="pwntools的使用学习">
+<meta name="twitter:description" content="&amp;emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。 安装请点这里 常用模块tubes : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPEelf : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息dynelf">
 
 
 
@@ -131,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/18/17.08.18/"/>
+  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2018/03/17/pwntools的使用学习/"/>
 
 
 
 
 
-  <title>大小端序 | </title>
+  <title>pwntools的使用学习 | </title>
   
 
 
@@ -276,7 +275,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2017/08/18/17.08.18/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2018/03/17/pwntools的使用学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="七夜">
@@ -293,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">大小端序</h1>
+          <h1 class="post-title" itemprop="name headline">pwntools的使用学习</h1>
         
 
         <div class="post-meta">
@@ -305,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T21:29:31+08:00">
-                2017-08-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T20:26:13+08:00">
+                2018-03-17
               </time>
             
 
@@ -328,8 +327,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/知识点总结/" itemprop="url" rel="index">
-                    <span itemprop="name">知识点总结</span>
+                  <a href="/categories/工具/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
                   </a>
                 </span>
 
@@ -362,48 +361,20 @@
       
 
       
-        <h1 id="大小端序"><a href="#大小端序" class="headerlink" title="大小端序"></a>大小端序</h1><p>大端序：字数据的高字节存储在低地址中。 </p>
-<p>小端序：字数据的低字节存储在低地址中。  </p>
-<p>大端序和小端序都是从存储器的低地址开始向高地址存储数据，不同的是一个字数据中先存高字节还是先存低字节。</p>
-<h4 id="大端序："><a href="#大端序：" class="headerlink" title="大端序："></a>大端序：</h4><table>
-<thead>
-<tr>
-<th>地址</th>
-<th>0x001</th>
-<th>0x002</th>
-<th>0x003</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>内容</td>
-<td>0x12</td>
-<td>0x34</td>
-<td>0x56</td>
-</tr>
-</tbody>
-</table>
-<h4 id="小端序"><a href="#小端序" class="headerlink" title="小端序"></a>小端序</h4><table>
-<thead>
-<tr>
-<th>地址</th>
-<th>0x001</th>
-<th>0x002</th>
-<th>0x003</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>内容</td>
-<td>0x56</td>
-<td>0x34</td>
-<td>0x12</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<hr>
-<p>用代码测试你是大端序小端序，输出1为小端序，有的gcc不支持bool类型变量，可讲bool改为int<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">bool checkCPU()</div><div class="line">&#123;</div><div class="line">union</div><div class="line">&#123;</div><div class="line">int a ;</div><div class="line">char b ;</div><div class="line">&#125; c;</div><div class="line"></div><div class="line">c.a = 1 ;</div><div class="line">return(c.b == 1);</div><div class="line">&#125;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">int a=0;</div><div class="line">a = checkCPU();</div><div class="line">printf(&quot;%d&quot;,a);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <p>&emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。</p>
+<p><a href="http://pwntools.readthedocs.io/en/stable/install.html/" target="_blank" rel="external">安装请点这里</a></p>
+<h3 id="常用模块"><a href="#常用模块" class="headerlink" title="常用模块"></a>常用模块</h3><p><strong>tubes</strong> : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPE<br><strong>elf</strong> : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息<br><strong>dynelf</strong> :用于远程符号泄漏，需要提供leak方法<br><strong>memleak</strong> : 用于内存泄漏<br><strong>asm</strong> : 汇编与反汇编，支持x86/x64/arm/mips/powerpc等基本上所有的主流平台<br><strong>shellcraft</strong> : shellcode的生成器</p>
+<h4 id="Tubes读写接口"><a href="#Tubes读写接口" class="headerlink" title="Tubes读写接口"></a>Tubes读写接口</h4><p>&emsp;与目标进行交互是一次攻击的最基本的操作，利用pwntools的远程调试remote(address,port)和本地调试process(path)可以和目标产生一个socket进行读写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">interactive() ： 直接进行交互，相当于回到shell的模式，在取得shell之后使用</div><div class="line">recv(numb = 4096,timeout = default)：接收指定字节</div><div class="line">recvall() ： 一直接收直到EOF</div><div class="line">recvline(keepends = True)： 接收一行，keepends为是否保留行尾的\n，默认为Ture</div><div class="line">recvuntil((delims,drop=False)：一直读到delims的pattern出现为止</div><div class="line">recvrepeat(timeout=default)： 持续接收知道EOF或者timeout</div><div class="line">send(data) ：发送数据</div><div class="line">sendline(data) : 发送一行数据，相当于在数据末尾加\n</div></pre></td></tr></table></figure>
+<h4 id="ELF"><a href="#ELF" class="headerlink" title="ELF"></a>ELF</h4><p>&emsp;这是一个非常实用的模块，下面演示了：获取基地址、获取函数地址（基于符号）、获取函数got地址、获取函数plt地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; e = ELF(&apos;/bin/cat&apos;)</div><div class="line">&gt;&gt;&gt; print hex(e.address)</div><div class="line">0x400000</div><div class="line">&gt;&gt;&gt; print hex(e.symbols[&apos;write&apos;])</div><div class="line">0x401680</div><div class="line">&gt;&gt;&gt; print hex(e.got[&apos;write&apos;])</div><div class="line">0x60b070</div><div class="line">&gt;&gt;&gt; print hex(e.plt[&apos;write&apos;])</div><div class="line">0x401680</div></pre></td></tr></table></figure>
+<p>p32、p64是将数据打包（将整数转换为二进制字符串）<br>u32、u64是将解包（将二进制字符串转换为整数）<br>&emsp;ELF模块还可以修改ELF文件，这里就不多介绍了，详情参考官方文档</p>
+<h4 id="Dynelf"><a href="#Dynelf" class="headerlink" title="Dynelf"></a>Dynelf</h4><p>&emsp;DynELF是pwntools中专门用来应对无libc情况的漏洞利用模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"># Assume a process or remote connection</div><div class="line">p = process(&apos;./pwnme&apos;)</div><div class="line"></div><div class="line"># Declare a function that takes a single address, and</div><div class="line"># leaks at least one byte at that address.</div><div class="line">def leak(address):</div><div class="line">data = p.read(address, 4)</div><div class="line">log.debug(&quot;%#x =&gt; %s&quot; % (address, (data or &apos;&apos;).encode(&apos;hex&apos;)))</div><div class="line">return data</div><div class="line"></div><div class="line"># For the sake of this example, let&apos;s say that we</div><div class="line"># have any of these pointers.  One is a pointer into</div><div class="line"># the target binary, the other two are pointers into libc</div><div class="line">main   = 0xfeedf4ce</div><div class="line">libc   = 0xdeadb000</div><div class="line">system = 0xdeadbeef</div><div class="line"></div><div class="line"># With our leaker, and a pointer into our target binary,</div><div class="line"># we can resolve the address of anything.</div><div class="line">#</div><div class="line"># We do not actually need to have a copy of the target</div><div class="line"># binary for this to work.</div><div class="line">d = DynELF(leak, main)</div><div class="line">assert d.lookup(None,     &apos;libc&apos;) == libc</div><div class="line">assert d.lookup(&apos;system&apos;, &apos;libc&apos;) == system</div><div class="line"></div><div class="line"># However, if we *do* have a copy of the target binary,</div><div class="line"># we can speed up some of the steps.</div><div class="line">d = DynELF(leak, main, elf=ELF(&apos;./pwnme&apos;))</div><div class="line">assert d.lookup(None,     &apos;libc&apos;) == libc</div><div class="line">assert d.lookup(&apos;system&apos;, &apos;libc&apos;) == system</div><div class="line"></div><div class="line"># Alternately, we can resolve symbols inside another library,</div><div class="line"># given a pointer into it.</div><div class="line">d = DynELF(leak, libc + 0x1234)</div><div class="line">assert d.lookup(&apos;system&apos;)      == system</div></pre></td></tr></table></figure></p>
+<p>详细利用方法可参考 <a href="https://www.anquanke.com/post/id/85129" target="_blank" rel="external">https://www.anquanke.com/post/id/85129</a></p>
+<h4 id="汇编与反汇编"><a href="#汇编与反汇编" class="headerlink" title="汇编与反汇编"></a>汇编与反汇编</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; asm(&apos;nop&apos;)</div><div class="line">&apos;\x90&apos;</div><div class="line">&gt;&gt;&gt; asm(&apos;nop&apos;, arch=&apos;arm&apos;)</div><div class="line">&apos;\x00\xf0 \xe3&apos;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; disasm(&apos;\xb8\x0b\x00\x00\x00&apos;)</div><div class="line">&apos;   0:   b8 0b 00 00 00          mov    eax,0xb&apos;</div><div class="line">&gt;&gt;&gt; print disasm(&apos;6a0258cd80ebf9&apos;.decode(&apos;hex&apos;))</div><div class="line">0:   6a 02                   push   0x2</div><div class="line">2:   58                      pop    eax</div><div class="line">3:   cd 80                   int    0x80</div><div class="line">5:   eb f9                   jmp    0x0</div></pre></td></tr></table></figure>
+<h4 id="shellcode"><a href="#shellcode" class="headerlink" title="shellcode"></a>shellcode</h4><p>&emsp;其中的子模块声明架构，比如shellcraft.arm 是ARM架构的，shellcraft.amd64是AMD64架构，shellcraft.i386是Intel 80386架构的，以及有一个shellcraft.common是所有架构通用的。<br>&emsp;由于平台和32位和64位的shellcode不一样，所以最好先设置context。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = shellcraft.i386() #32位linux的shellcode</div><div class="line">&gt;&gt;&gt; print(shellcraft.sh()) #打印shellcode</div><div class="line">&gt;&gt;&gt; x = asm(x) #把shellcode编程汇编形式</div></pre></td></tr></table></figure></p>
+<p><a href="http://pwntools.readthedocs.io/en/stable/" target="_blank" rel="external">更多信息请参考官方文档</a></p>
 
       
     </div>
@@ -431,12 +402,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/知识点总结/" rel="tag"># 知识点总结</a>
-          
-        </div>
-      
 
       
       
@@ -446,15 +411,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/10/09/od的简单使用/" rel="next" title="od的简单使用">
+                <i class="fa fa-chevron-left"></i> od的简单使用
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/19/17.08.19/" rel="prev" title="GOT覆盖和Linux地址随机化">
-                GOT覆盖和Linux地址随机化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -626,7 +591,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#大小端序"><span class="nav-number">1.</span> <span class="nav-text">大小端序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大端序："><span class="nav-number">1.0.0.1.</span> <span class="nav-text">大端序：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小端序"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">小端序</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用模块"><span class="nav-number">1.</span> <span class="nav-text">常用模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tubes读写接口"><span class="nav-number">1.1.</span> <span class="nav-text">Tubes读写接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ELF"><span class="nav-number">1.2.</span> <span class="nav-text">ELF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dynelf"><span class="nav-number">1.3.</span> <span class="nav-text">Dynelf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#汇编与反汇编"><span class="nav-number">1.4.</span> <span class="nav-text">汇编与反汇编</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shellcode"><span class="nav-number">1.5.</span> <span class="nav-text">shellcode</span></a></li></ol></li></ol></div>
             
 
           </div>
