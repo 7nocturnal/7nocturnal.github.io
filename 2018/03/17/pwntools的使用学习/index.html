@@ -99,7 +99,7 @@
 <meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2018/03/17/pwntools的使用学习/index.html">
 <meta property="og:site_name">
 <meta property="og:description" content="&amp;emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。 安装请点这里 常用模块tubes : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPEelf : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息dynelf">
-<meta property="og:updated_time" content="2018-03-17T12:37:49.000Z">
+<meta property="og:updated_time" content="2018-03-24T08:13:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pwntools的使用学习">
 <meta name="twitter:description" content="&amp;emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。 安装请点这里 常用模块tubes : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPEelf : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息dynelf">
@@ -362,7 +362,7 @@
 
       
         <p>&emsp;pwntools是一个ctf框架和漏洞利用开发库，用Python开发，旨在让使用者简单快速的编写exploit。</p>
-<p><a href="http://pwntools.readthedocs.io/en/stable/install.html/" target="_blank" rel="external">安装请点这里</a></p>
+<p><a href="http://pwntools.readthedocs.io/en/stable/install.html" target="_blank" rel="external">安装请点这里</a></p>
 <h3 id="常用模块"><a href="#常用模块" class="headerlink" title="常用模块"></a>常用模块</h3><p><strong>tubes</strong> : 包括tubes.sock, tubes.process, tubes.ssh, tubes.serialtube，分别适用于不同场景的PIPE<br><strong>elf</strong> : 对elf文件进行操作，可以获取elf文件中的PLT条目和GOT条目信息<br><strong>dynelf</strong> :用于远程符号泄漏，需要提供leak方法<br><strong>memleak</strong> : 用于内存泄漏<br><strong>asm</strong> : 汇编与反汇编，支持x86/x64/arm/mips/powerpc等基本上所有的主流平台<br><strong>shellcraft</strong> : shellcode的生成器</p>
 <h4 id="Tubes读写接口"><a href="#Tubes读写接口" class="headerlink" title="Tubes读写接口"></a>Tubes读写接口</h4><p>&emsp;与目标进行交互是一次攻击的最基本的操作，利用pwntools的远程调试remote(address,port)和本地调试process(path)可以和目标产生一个socket进行读写</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">interactive() ： 直接进行交互，相当于回到shell的模式，在取得shell之后使用</div><div class="line">recv(numb = <span class="number">4096</span>,timeout = default)：接收指定字节</div><div class="line">recvall() ： 一直接收直到EOF</div><div class="line">recvline(keepends = <span class="keyword">True</span>)： 接收一行，keepends为是否保留行尾的\n，默认为Ture</div><div class="line">recvuntil((delims,drop=<span class="keyword">False</span>)：一直读到delims的pattern出现为止</div><div class="line">recvrepeat(timeout=default)： 持续接收知道EOF或者timeout</div><div class="line">send(data) ：发送数据</div><div class="line">sendline(data) : 发送一行数据，相当于在数据末尾加\n</div></pre></td></tr></table></figure>
